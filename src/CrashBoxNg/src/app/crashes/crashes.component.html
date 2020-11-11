@@ -1,0 +1,105 @@
+<div class="card text-center">
+    <div class="card-header" style="background-color: rgb(233, 237, 240)">
+      <div class="container">
+        <div class="row justify-content-center">
+          <h5>Project : {{ pk }}</h5>
+        </div>
+        <div class="row justify-content-center">
+          <form class="form-inline my-2 my-lg-0">
+            <label
+              class="form-control bg-transparent text-muted pull-right"
+              for="version"
+              style="color: white; border: none"
+              >Filter :
+            </label>
+            <select
+              name="filter"
+              id=""
+              class="form-control my-sm-0 mr-sm-2"
+              style="width: 150px"
+              (change)="filterChanged($event.target.value)"
+            >
+              <option *ngFor="let filter of filters" value="{{ filter }}">
+                {{ filter }}
+              </option>
+            </select>
+            <button
+              class="btn btn-outline-success my-2 my-sm-0"
+              (click)="onReload($event)"
+            >
+              <i
+                class="fa fa-circle-o-notch fa-spin"
+                *ngIf="progress == true"
+              ></i>
+              <i class="fa fa-refresh" *ngIf="progress == false"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <i class="fa fa-circle-o-notch fa-spin" *ngIf="!crashes"></i>
+      <table class="table" *ngIf="crashes && crashes.length">
+        <thead style="background-color: rgb(233, 237, 240)">
+          <tr>
+            <th scope="col">App</th>
+            <th scope="col">Date</th>
+            <th scope="col">Region</th>
+            <th scope="col">Type</th>
+            <th scope="col">Method</th>
+            <th scope="col">Log</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let crash of crashes">
+            <td>{{ crash.pk }}</td>
+            <td>{{ crash._ts * 1000 | date: "short" }}</td>
+            <!-- <td>{{ getDate(crash._ts)}}</td>  -->
+            <td>{{ crash.region }}</td>
+            <td>{{ crash.extype | formatCrash: "30c" }}</td>
+            <td><a [routerLink]="['/crashes',crash.pk,crash.id]">{{ crash.method | formatCrash: "30c" }}</a></td>
+            <td>
+              <a target="_blank" href="{{ crash.log }}" *ngIf="crash.log != '0'"
+                ><i class="fa fa-download"></i
+              ></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+        <!-- Top Crashes Table -->
+        <table class="table" *ngIf="topCrashes && topCrashes.length && filter =='Top 10'">
+            <thead style="background-color: rgb(233, 237, 240)">
+            <tr>
+                <th scope="col">Method</th>
+                <th scope="col">Count</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let crash of topCrashes">
+                <td>{{ crash.method }}</td>
+                <td>{{ crash.count }}</td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    <div class="card-footer text-center">
+      <button
+        *ngIf="page > 0"
+        class="btn btn-outline-secondary float-left"
+        (click)="onBack()"
+      >
+        <i class="fa fa-chevron-left fa-fw"></i>
+      </button>
+      <button class="btn btn-theme" type="button">page-{{ page }}</button>
+      <button
+        *ngIf="crashes && crashes.length >= 15"
+        class="btn btn-outline-secondary float-right"
+        (click)="onNext()"
+      >
+        <i class="fa fa-chevron-right fa-fw"></i>
+      </button>
+    </div>
+  </div>
+  <!-- style="background-color: rgb(205, 245, 239) -->
+  

@@ -1,0 +1,9 @@
+/Users/jit/Git/crashbox/src/CrashBox.Models/bin/Debug/netstandard2.0/CrashBox.Models.deps.json
+/Users/jit/Git/crashbox/src/CrashBox.Models/bin/Debug/netstandard2.0/CrashBox.Models.dll
+/Users/jit/Git/crashbox/src/CrashBox.Models/bin/Debug/netstandard2.0/CrashBox.Models.pdb
+/Users/jit/Git/crashbox/src/CrashBox.Models/obj/Debug/netstandard2.0/CrashBox.Models.AssemblyInfoInputs.cache
+/Users/jit/Git/crashbox/src/CrashBox.Models/obj/Debug/netstandard2.0/CrashBox.Models.AssemblyInfo.cs
+/Users/jit/Git/crashbox/src/CrashBox.Models/obj/Debug/netstandard2.0/CrashBox.Models.csproj.CoreCompileInputs.cache
+/Users/jit/Git/crashbox/src/CrashBox.Models/obj/Debug/netstandard2.0/CrashBox.Models.dll
+/Users/jit/Git/crashbox/src/CrashBox.Models/obj/Debug/netstandard2.0/CrashBox.Models.pdb
+/Users/jit/Git/crashbox/src/CrashBox.Models/obj/Debug/netstandard2.0/CrashBox.Models.csprojAssemblyReference.cache

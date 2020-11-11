@@ -1,0 +1,157 @@
+# .NET Core Function App to Windows on Azure
+# Build a .NET Core function app and deploy it to Azure as a Windows function App.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - '*' # same as '/' for the repository root
+    exclude:
+    - 'src/CrashBox.TH/*'
+    - 'src/CrashBox.WebApi/*'
+    - 'src/CrashBoxNg/*'
+    - 'src/img/*'
+    - 'src/Readme.md'
+
+
+variables:
+  # Azure Resource Manager connection created during pipeline creation
+  azureSubscription: 'f51b94e4-091d-4565-9f13-8463c1c6f89f'
+
+  # Function app name
+  functionAppName: 'crashbox'
+
+  # Agent VM image name
+  vmImageName: 'vs2017-win2016'
+
+  # Working Directory
+  workingDirectory: '$(System.DefaultWorkingDirectory)/src/CrashBox.Api'
+
+  cosmosDb: 'crashes'
+
+  cosmosContainer: 'crashes'
+
+  cosmosAccount: 'https://crashbox-db.documents.azure.com:443/'
+
+  cosmosPrimaryKey: '71IHnsVO2RQeTyF03783tTWIB7TBF1dzDTWjkhNSUlIsgYLkITTzquiRqSgopLZ7f0ZJsz48pVAb0BFqL05lng=='
+
+  cosmosConnString: 'AccountEndpoint=https://crashbox-db.documents.azure.com:443/;AccountKey=71IHnsVO2RQeTyF03783tTWIB7TBF1dzDTWjkhNSUlIsgYLkITTzquiRqSgopLZ7f0ZJsz48pVAb0BFqL05lng==;'
+
+  sendGridKey: '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'
+
+stages:
+- stage: Build
+  displayName: Build stage
+
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: |
+          $(workingDirectory)/*.csproj
+        arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      artifact: drop
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    environment: 'development'
+    pool:
+      vmImage: $(vmImageName)
+
+    strategy:
+      runOnce:
+        deploy:
+
+          steps:
+          - task: AzureFunctionApp@1
+            displayName: 'CrashBox Functions deploy'
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              slotName: stage
+              appType: functionApp
+              appName: $(functionAppName)
+              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+          - task: AzureAppServiceSettings@1
+            displayName: Azure App Service Settings
+            inputs:
+              resourceGroupName: "crashbox"
+              slotName: stage
+              azureSubscription: $(azureSubscription)
+              appName: $(functionAppName)
+            # To deploy the settings on a slot, provide slot name as below. By default, the settings would be applied to the actual Web App (Production slot)
+            # slotName: staging
+              appSettings: |
+                [
+                  {
+                    "name": "COSMOS_ACCOUNT",
+                    "value": "$(cosmosAccount)",
+                    "slotSetting": false
+                  },
+                  {
+                    "name": "COSMOS_PRIMARY_KEY",
+                    "value": "$(cosmosPrimaryKey)", 
+                    "slotSetting": false
+                  },
+                  {
+                    "name": "COSMOS_DB_NAME",
+                    "value": "$(cosmosDb)", 
+                    "slotSetting": false
+                  },
+                  {
+                    "name": "COSMOS_CONTAINER_NAME",
+                    "value": "$(cosmosContainer)", 
+                    "slotSetting": false
+                  },
+                  {
+                    "name": "COSMOS_CONTAINER_NAME",
+                    "value": "$(cosmosContainer)", 
+                    "slotSetting": false
+                  },
+                  {
+                    "name": "SEND_GRID_KEY",
+                    "value": "$(sendGridKey)", 
+                    "slotSetting": false
+                  }
+                ]
+              connectionStrings: |
+                [
+                  {
+                    "name": "CosmosDBConnection",
+                    "value": "$(cosmosConnString)",
+                    "type": "custom",
+                    "slotSetting": false
+                  }
+                ]
+
+
+         
+            
+              

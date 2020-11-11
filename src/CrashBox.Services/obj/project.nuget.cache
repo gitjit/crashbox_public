@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "6gRvKFqZmY8AeVFZmVmhjM7YsL1xN/3TaheZhjDnfUC/GMd0dV9bg/YcLOPNFl9r14sJpX1eIm5fMsykGaJB0g==",
+  "success": true,
+  "projectFilePath": "/Users/jit/Git/crashbox/src/CrashBox.Services/CrashBox.Services.csproj",
+  "expectedPackageFiles": [
+    "/Users/jit/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/Users/jit/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,52 @@
+<div class="justify-content-center">
+    <div class="border border-light p-3 mb-4"  *ngIf="progress == true">
+      <div
+        class="d-flex align-items-center justify-content-center"
+        style="height: 350px"
+      >
+        <i
+          class="fa fa-circle-o-notch fa-spin fa-5x"
+          style="
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+            margin: auto;
+          "
+        ></i>
+      </div>
+      <p style="text-align: center;">Downloading...</p>
+    </div>
+
+    <div class="card"  *ngIf="showWelcome == true">
+      <h5 class="card-header text-center">Welcome to Crashbox</h5>
+      <div class="card-body text-center">
+        <h5 class="card-title">{{subTitle1}}</h5>
+        <p class="card-text">{{subTitle2}}</p>
+        <a class="btn btn-primary" (click)="onLogin()">{{btnName}}</a>
+      </div>
+    </div>
+
+    
+    <div style="clear: both"></div>
+    
+    <div class="card-columns mt-2 justify-content-center" *ngIf="projects">
+      <div *ngFor="let project of projects">
+        <a href="" [routerLink]="['/crashes',project.name]">
+          <div class="card">
+            <div
+              class="card-header text-center"
+              style="background-color: rgb(26, 24, 22)"
+            >
+              <h4>{{ project.name }}</h4>
+            </div>
+            <div *ngIf="project.count"  class="card-body text-center">
+              Total Crashes:{{ project.count }}
+            </div>
+            <div  *ngIf="project.lastEntry" class="card-footer text-center">
+              Last Crash : {{ getDate(project.lastEntry) }}
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>

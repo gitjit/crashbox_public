@@ -1,0 +1,164 @@
+# ASP.NET Core
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - '*' # same as '/' for the repository root
+    exclude:
+    - '../CrashBox.TH/*'
+    - '../CrashBox.Api/*'
+    - '../CrashBoxNg/*'
+    - '../img/*'
+    - '../Readme.md'
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  
+  cosmosDb: 'crashes'
+
+  cosmosContainer: 'crashes'
+
+  cosmosAccount: 'https://xxxxx.documents.azure.com:443/'
+
+  cosmosPrimaryKey: 'xxxxx1dzDTWjkhNSUlIsgYLkITTzquiRqSgopLZ7f0ZJsz48pVAb0BFqL05lng=='
+
+  cosmosConnString: 'AccountEndpoint=https://xxxx-db.documents.azure.com:443/;AccountKey=xxxxx=TTzquiRqSgopLZ7f0ZJsz48pVAb0BFqL05lng==;'
+
+  sendGridKey: 'xxxxsJura3cW0-sQroyKmxxxRZtmexhySFS-A'
+
+
+steps:
+# #Optional: 'dotnet restore' is not necessary because the 'dotnet build' command executes restore as well.
+# - task: DotNetCoreCLI@2
+#   displayName: 'Restore dependencies'
+#   inputs:
+#    command: restore
+#    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build web project'
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish web project'
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: true
+    buildProperties: 
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+
+
+- task: AzureAppServiceSettings@1
+  inputs:
+    azureSubscription: 'Visual Studio Enterprise (5797098c-4bd1-4e23-b734-a01cb3eb63bc)'
+    appName: 'CrashBoxWeb'
+    resourceGroupName: 'crashbox'
+    appSettings: |
+      [
+                        {
+                          "name": "COSMOS_ACCOUNT",
+                          "value": "$(cosmosAccount)",
+                          "slotSetting": false
+                        },
+                        {
+                          "name": "COSMOS_PRIMARY_KEY",
+                          "value": "$(cosmosPrimaryKey)", 
+                          "slotSetting": false
+                        },
+                        {
+                          "name": "COSMOS_DB_NAME",
+                          "value": "$(cosmosDb)", 
+                          "slotSetting": false
+                        },
+                        {
+                          "name": "COSMOS_CONTAINER_NAME",
+                          "value": "$(cosmosContainer)", 
+                          "slotSetting": false
+                        },
+                        {
+                          "name": "COSMOS_CONTAINER_NAME",
+                          "value": "$(cosmosContainer)", 
+                          "slotSetting": false
+                        },
+                        {
+                          "name": "SEND_GRID_KEY",
+                          "value": "$(sendGridKey)", 
+                          "slotSetting": false
+                        }
+                      ]
+    connectionStrings: |
+      [
+                        {
+                          "name": "CosmosDBConnection",
+                          "value": "$(cosmosConnString)",
+                          "type": "custom",
+                          "slotSetting": false
+                        }
+                      ]
+#                     "name": "SEND_GRID_KEY",
+#                     "value": "$(sendGridKey)", 
+#                     "slotSetting": false
+#                   }
+#                 ]
+#     connectionStrings: |
+#                 [
+#                   {
+#                     "name": "CosmosDBConnection",
+#                     "value": "$(cosmosConnString)",
+#                     "type": "custom",
+#                     "slotSetting": false
+#                   }
+#                 ]
+
+# - task: Bash@3
+#   inputs:
+#     targetType: 'inline'
+#     script: echo 'Jithesh - $(System.DefaultWorkingDirectory)'
+
+# - task: DotNetCoreCLI@2
+#   displayName: 'Build web project'
+#   inputs:
+#     command: 'build'
+#     projects: $(SolutionPath)
+
+# - task: DotNetCoreCLI@2
+#   displayName: 'Publish and zip'
+#   inputs:
+#     command: publish
+#     publishWebProjects: False
+#     projects: $(SolutionPath)
+#     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+#     zipAfterPublish: True
+
+# - task: AzureWebApp@1
+#   displayName: 'Deploy Azure Web App'
+#   inputs:
+#     azureSubscription: '<REPLACE_WITH_AZURE_SUBSCRIPTION_INFO>'
+#     appName: <REPLACE_WITH_EXISTING_APP_SERVICE_NAME>
+#     appType: 'webApp'
+#     package: $(Build.ArtifactStagingDirectory)/**/*.zip
+
+# # Optional step if you want to deploy to some other system using a Release pipeline or inspect the package afterwards
+# - task: PublishBuildArtifacts@1
+#   displayName: 'Publish Build artifacts'
+#   inputs:
+#     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#     ArtifactName: 'drop'
+#     publishLocation: 'Container'

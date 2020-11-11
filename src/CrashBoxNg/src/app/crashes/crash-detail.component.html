@@ -1,0 +1,75 @@
+<div class="card">
+    <div class="card-header text-center">
+        {{pageTitle}}
+    </div>
+    <div class="card-body text-center" *ngIf = 'progress == true'>
+        <button class = "btn btn-outline-secondary" >
+            <i  class='fa fa-circle-o-notch fa-spin fa-10x' ></i>
+        </button>
+    </div>
+    <div class='table-responsive'>
+        <table class='table'  *ngIf='crash'>
+  
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>{{crash.id}}</td>
+                </tr>
+                <tr>
+                    <td>App</td>
+                    <td>{{crash.app}}</td>
+                </tr>
+                <tr>
+                    <td>Version</td>
+                    <td>{{crash.version}}</td>
+                </tr>
+                <tr>
+                    <td>Platform</td>
+                    <td>{{crash.os}}</td>
+                </tr>
+                <tr>
+                    <td>Region</td>
+                    <td>{{crash.region}}</td>
+                </tr>
+                <tr>
+                    <td>Language</td>
+                    <td>{{crash.language}}</td>
+                </tr>
+                <tr>
+                    <td>Created</td>
+                    <td>{{crash._ts}}</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>{{crash.extype}}</td>
+                </tr>
+                <tr>
+                    <td>Method</td>
+                    <td>{{crash.method}}</td>
+                </tr>
+                <tr>
+                    <td>Stack</td>
+                    <td>{{crash.stack}}</td>
+                </tr>
+                <tr>
+                    <td>Log</td>
+                    <td>
+                        <!-- <button *ngIf='crash.log != "0"' class="btn btn-success"
+                                (click)='downloadLog()'>
+                           Download
+                        </button> -->
+                        <a  href={{crash.log}} *ngIf='crash.log != "0"'><i class="fa fa-download"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class='card-footer'>
+        <button class="btn btn-outline-secondary"
+                (click)='onBack()'
+                style="width:80px">
+                <i class="fa fa-chevron-left fa-fw"></i>
+        </button>
+    </div>
+</div>
+

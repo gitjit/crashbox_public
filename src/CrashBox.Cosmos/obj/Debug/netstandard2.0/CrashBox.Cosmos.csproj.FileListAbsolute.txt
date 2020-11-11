@@ -1,0 +1,14 @@
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/bin/Debug/netstandard2.0/Microsoft.Azure.Cosmos.ServiceInterop.dll
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/bin/Debug/netstandard2.0/Cosmos.CRTCompat.dll
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/bin/Debug/netstandard2.0/CrashBox.Cosmos.deps.json
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/bin/Debug/netstandard2.0/CrashBox.Cosmos.dll
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/bin/Debug/netstandard2.0/CrashBox.Cosmos.pdb
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/bin/Debug/netstandard2.0/CrashBox.Models.dll
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/bin/Debug/netstandard2.0/CrashBox.Models.pdb
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/obj/Debug/netstandard2.0/CrashBox.Cosmos.csprojAssemblyReference.cache
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/obj/Debug/netstandard2.0/CrashBox.Cosmos.AssemblyInfoInputs.cache
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/obj/Debug/netstandard2.0/CrashBox.Cosmos.AssemblyInfo.cs
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/obj/Debug/netstandard2.0/CrashBox.Cosmos.csproj.CoreCompileInputs.cache
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/obj/Debug/netstandard2.0/CrashBox.Cosmos.csproj.CopyComplete
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/obj/Debug/netstandard2.0/CrashBox.Cosmos.dll
+/Users/jit/Git/crashbox/src/CrashBox.Cosmos/obj/Debug/netstandard2.0/CrashBox.Cosmos.pdb
